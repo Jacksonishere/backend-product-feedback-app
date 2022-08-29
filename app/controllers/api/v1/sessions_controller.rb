@@ -1,7 +1,7 @@
 class Api::V1::SessionsController < ApplicationController
   def create
-    user = User.find_by(email: sign_in_params[:email].downcase)
-    if user && user.authenticate(sign_in_params[:password])
+    user = User.find_by(email: params[:email].downcase)
+    if user && user.authenticate(params[:password])
       session[:current_user_id] = user.id
       render json: UserSerializer.new(user).serializable_hash.to_json
     else
@@ -18,7 +18,7 @@ class Api::V1::SessionsController < ApplicationController
     end
   end
 
-  def sign_in_params
-    params.require(:user).permit(:email, :password)
-  end
+  def is_logged_in 
+    render json: UserSerializer.new(@current_user).serializable_hash, status: :ok if logged_in?
+  end 
 end
