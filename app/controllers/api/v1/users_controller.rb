@@ -19,7 +19,7 @@ class Api::V1::UsersController < ApplicationController
 
     if new_user.save
       session[:current_user_id] = new_user.id
-      render json: UserSerializer.new(new_user).serializable_hash, status: :created
+      render json: new_user, status: :created
     else
       render json: { msg: new_user.errors.full_messages.to_sentence }, status: :unprocessable_entity
     end

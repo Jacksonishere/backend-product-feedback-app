@@ -1,6 +1,6 @@
 require 'faker'
 
-categories = %w(feature enhancement bug ui ux)
+categories = %w(feature enhancement bug UI UX)
 statuses = %w(suggestion planned in-progress live)
 
 30.times do

@@ -1,6 +1,5 @@
-class UserSerializer
-  include JSONAPI::Serializer
-  attributes :username, :avatar_url, :email
+class UserSerializer < ActiveModel::Serializer
+  attributes :id, :username, :avatar_url
+  # has_many :feedbacks
 
-  has_many :feedbacks
 end

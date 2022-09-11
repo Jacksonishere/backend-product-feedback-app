@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_10_042830) do
+ActiveRecord::Schema.define(version: 2022_09_11_203336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,19 @@ ActiveRecord::Schema.define(version: 2022_09_10_042830) do
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
+  create_table "likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "likeable_type", null: false
+    t.bigint "likeable_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    # this is for lookup of the likeable thing. before there was only an index on the post_id. 
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    # add unique index for db integrity. so we don't accidentally have a user like the same post twice.
+    t.index ["user_id", "likeable_id", "likeable_type"], name: "index_likes_on_user_id_and_likeable_id_and_likeable_type", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email"
@@ -36,4 +49,5 @@ ActiveRecord::Schema.define(version: 2022_09_10_042830) do
   end
 
   add_foreign_key "feedbacks", "users"
+  add_foreign_key "likes", "users"
 end
