@@ -9,6 +9,10 @@ class ApplicationController < ActionController::API
     !!current_user
   end
 
+  def require_user
+    head :unauthorized if !logged_in? 
+  end
+
   def parameter_missing(e)
    render json: { msg: e.message }, status: :unprocessable_entity
   end
