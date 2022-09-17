@@ -6,7 +6,12 @@ class Api::V1::FeedbacksController < ApplicationController
   end
 
   def show
-
+    feedback = Feedback.find(params[:id])
+    if feedback
+      render json: feedback
+    else
+      head :not_found
+    end
   end
 
   def destroy

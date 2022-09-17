@@ -11,7 +11,7 @@ class Api::V1::LikesController < ApplicationController
   end
 
   def destroy
-    like = likes.find(params[:id])
+    like = Like.where(likeable_type: params[:likeable_type], likeable_id: params[:likeable_id])[0] 
     if like.destroy
       head :no_content
     else
