@@ -32,9 +32,7 @@ ActiveRecord::Schema.define(version: 2022_09_11_203336) do
     t.bigint "likeable_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    # this is for lookup of the likeable thing. before there was only an index on the post_id. 
     t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
-    # add unique index for db integrity. so we don't accidentally have a user like the same post twice.
     t.index ["user_id", "likeable_id", "likeable_type"], name: "index_likes_on_user_id_and_likeable_id_and_likeable_type", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
