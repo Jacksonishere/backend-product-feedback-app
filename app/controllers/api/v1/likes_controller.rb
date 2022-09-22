@@ -1,20 +1,16 @@
 class Api::V1::LikesController < ApplicationController
   before_action :require_user
 
-  def create
-    like = current_user.likes.build(likeable_id: params[:likeable_id], likeable_type: params[:likeable_type]);
-    if like.save
-      head :created
-    else
-      head :unprocessable_entity
-    end
-  end
-
-  def destroy
-    like = Like.where(likeable_type: params[:likeable_type], likeable_id: params[:likeable_id])[0] 
-    if like.destroy
+  def update
+    like = current_user.likes.where(likeable_id: params[:likeable_id], likeable_type: params[:likeable_type])[0]
+    begin
+      if like
+        like.destroy!
+      else
+        current_user.likes.create!(likeable_id: params[:likeable_id], likeable_type: params[:likeable_type])
+      end
       head :no_content
-    else
+    rescue
       head :unprocessable_entity
     end
   end

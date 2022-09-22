@@ -3,8 +3,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: [:index, :create, :show]
       resources :feedbacks, only: [:index, :create, :show, :update, :delete]
-      resources :likes, only: [:create]
-      delete '/likes', to: 'likes#destroy'
+      patch 'likes', to: 'likes#update'
+      # delete '/likes', to: 'likes#destroy'
       
       post '/login', to: 'sessions#create'
       get '/is_logged_in', to: 'sessions#is_logged_in'
