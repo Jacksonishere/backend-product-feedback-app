@@ -1,8 +1,12 @@
 class Api::V1::FeedbacksController < ApplicationController
   def index
-    feedbacks = Feedback.page(params[:offset]).per(params[:limit])
-    # render json: FeedbackSerializer.new(feedbacks, include: [:user]).serializable_hash.to_json
-    render json: feedbacks, include: [:user]
+    feedbacks = Feedback.filter(filter_params)
+    sort_params.each do |sort_by, order|
+      feedbacks = feedbacks.public_send("sort_by_#{sort_by}", order)
+    end
+    feedbacks = feedbacks.page(params[:offset]).per(params[:limit])
+
+    render json: feedbacks, include: [:user, :likes]
   end
 
   def show
@@ -26,7 +30,11 @@ class Api::V1::FeedbacksController < ApplicationController
     
   end
 
-  def feedback_params
-    # params.permit(:page_num)
+  def filter_params
+    params.slice(:category)
+  end
+
+  def sort_params
+    JSON.parse(params[:sort])
   end
 end
