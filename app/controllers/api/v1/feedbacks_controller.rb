@@ -1,20 +1,21 @@
 class Api::V1::FeedbacksController < ApplicationController
-  # before_action :require_user, only: [:create, :update, :destroy]
+  before_action :require_user, only: [:create, :update, :destroy]
+  before_action :set_feedback, only: [:update, :destroy]
 
   def index
-    feedbacks = Feedback.filter(filter_params)
+    @feedbacks = Feedback.filter(filter_params)
     sort_params.each do |sort_by, order|
-      feedbacks = feedbacks.public_send("sort_by_#{sort_by}", order)
+      @feedbacks = @feedbacks.public_send("sort_by_#{sort_by}", order)
     end
-    feedbacks = feedbacks.page(params[:offset]).per(params[:limit])
+    @feedbacks = @feedbacks.page(params[:offset]).per(params[:limit])
 
-    render json: feedbacks, include: [:user, :likes]
+    render json: @feedbacks, include: [:user, :likes]
   end
 
   def show
-    feedback = Feedback.find(params[:id])
-    if feedback
-      render json: feedback
+    @feedback = Feedback.find(params[:id])
+    if @feedback
+      render json: @feedback
     else
       head :not_found
     end
@@ -31,27 +32,36 @@ class Api::V1::FeedbacksController < ApplicationController
     
     # render json: feedback
 
-    feedback = current_user.feedbacks.build(feedback_params)
-    if feedback.save
-      render json: feedback, status: :created
+    @feedback = current_user.feedbacks.build(feedback_params)
+    if @feedback.save
+      render json: @feedback, status: :created
     else
       head :unprocessable_entity
     end
   end
-
+  
   def update
-
-  end
-
-  def feedback_params
-    params.require(:feedback).permit(:title, :category, :status, :detail)
+    if(@feedback.update(feedback_params))
+      render json: @feedback, status: :created
+    else
+      head :unprocessable_entity
+    end
   end
   
-  def filter_params
-    params.slice(:category)
-  end
+  private
+    def feedback_params
+      params.require(:feedback).permit(:title, :category, :status, :detail)
+    end
+    
+    def filter_params
+      params.slice(:category)
+    end
 
-  def sort_params
-    JSON.parse(params[:sort])
-  end
+    def sort_params
+      JSON.parse(params[:sort])
+    end
+
+    def set_feedback
+      @feedback = current_user.feedbacks.find(params[:id])
+    end
 end

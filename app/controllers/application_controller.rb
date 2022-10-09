@@ -14,6 +14,6 @@ class ApplicationController < ActionController::API
   end
 
   def parameter_missing(e)
-   render json: { msg: e.message }, status: :unprocessable_entity
+    render json: { msg: e.message }, status: :unprocessable_entity
   end
 end
