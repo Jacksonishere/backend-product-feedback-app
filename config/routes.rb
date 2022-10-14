@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users, only: [:index, :create, :show]
-      resources :feedbacks, only: [:index, :create, :show, :update, :delete]
+      resources :feedbacks, only: [:index, :create, :show, :update, :destroy]
+      resources :comments, only: [:create, :destroy]
       patch 'likes', to: 'likes#update'
       # delete '/likes', to: 'likes#destroy'
       

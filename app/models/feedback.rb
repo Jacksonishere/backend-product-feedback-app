@@ -3,9 +3,6 @@ class Feedback < ApplicationRecord
   
   validates_length_of :detail, minimum: 1, maximum: 256
   
-  belongs_to :user
-  has_many :likes, as: :likeable, dependent: :delete_all
-
   scope :filter_by_category, -> (category) { 
     where('category = ?', category) 
   }
@@ -15,4 +12,8 @@ class Feedback < ApplicationRecord
     group(:id).      # group the rows by feedback id, so we can run aggregate functions
     order("count(likes.id) #{order}, feedbacks.created_at desc")
    } 
+
+  belongs_to :user
+  has_many :likes, as: :likeable, dependent: :delete_all
+  has_many :comments
 end
