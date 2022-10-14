@@ -3,7 +3,7 @@ class Comment < ApplicationRecord
   validate :no_nested_comment
 
   belongs_to :user
-  belongs_to :feedback
+  belongs_to :feedback, counter_cache: :comments_count
   
   has_many :comments, foreign_key: :parent_id
   belongs_to :parent, class_name: 'Comment', optional: true
