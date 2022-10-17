@@ -9,13 +9,18 @@ class Api::V1::FeedbacksController < ApplicationController
     end
     @feedbacks = @feedbacks.page(params[:offset]).per(params[:limit])
 
-    render json: @feedbacks.includes(:user, :likes)
+    render json: @feedbacks.includes(:user)
   end
 
   def show
     @feedback = Feedback.find(params[:id])
     if @feedback
       render json: @feedback
+      # render json: {
+      #   feedback: ActiveModelSerializers::SerializableResource.new(@feedback, scope: {current_user}),
+      #   # comments: ActiveModelSerializers::SerializableResource.new(@comments)
+      # }
+      # render json: @comments
     else
       head :not_found
     end

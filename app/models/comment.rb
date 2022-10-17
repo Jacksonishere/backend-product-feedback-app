@@ -5,14 +5,15 @@ class Comment < ApplicationRecord
   belongs_to :user
   belongs_to :feedback, counter_cache: :comments_count
   
-  has_many :comments, foreign_key: :parent_id
-  belongs_to :parent, class_name: 'Comment', optional: true
+  # has pk assumed to be (self_id)comment_id in :comments table
+  has_many :comments, foreign_key: :parent_id, dependent: :destroy
+  # has pk assumed to be parent_id that points to :parent table by default
+  belongs_to :parent, class_name: 'Comment', optional: true 
 
   private
 
   def no_nested_comment
     parent_comment = Comment.where(id: parent_id).first
-    binding.irb
     errors.add("NO NESTED COMMENTS ATM!!!") if parent_comment && parent_comment.parent
   end
 end
