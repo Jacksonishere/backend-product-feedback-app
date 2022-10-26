@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       patch 'likes', to: 'likes#update'
       # delete '/likes', to: 'likes#destroy'
       
+      get '/parent_comments', to: "comments#parent_comments"
+      get '/replies', to: "comments#replies"
       post '/login', to: 'sessions#create'
       get '/is_logged_in', to: 'sessions#is_logged_in'
       delete '/signout', to: 'sessions#destroy'

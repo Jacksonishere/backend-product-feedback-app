@@ -9,7 +9,7 @@ class Api::V1::FeedbacksController < ApplicationController
     end
     @feedbacks = @feedbacks.page(params[:offset]).per(params[:limit])
 
-    render json: @feedbacks.includes(:user)
+    render json: @feedbacks.includes(:user, :likes, likes: :user)
   end
 
   def show
