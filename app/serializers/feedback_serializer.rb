@@ -27,5 +27,11 @@ class FeedbackSerializer < ActiveModel::Serializer
       false
     end
   end
+
+  private
+
+  def current_user
+    scope
+  end
   
 end

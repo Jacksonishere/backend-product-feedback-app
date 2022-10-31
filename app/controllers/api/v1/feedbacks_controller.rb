@@ -9,7 +9,10 @@ class Api::V1::FeedbacksController < ApplicationController
     end
     @feedbacks = @feedbacks.page(params[:offset]).per(params[:limit])
 
-    render json: @feedbacks.includes(:user, :likes, likes: :user)
+    render json: {
+      feedbacks: ActiveModel::SerializableResource.new(@feedbacks.includes(:user, :likes, likes: :user), each_serializer: FeedbackSerializer, scope: current_user).as_json,
+      feedback_count:(if params[:category] == 'all' then Feedback.where(nil) else Feedback.where(category: params[:category]) end).count
+    } 
   end
 
   def show
