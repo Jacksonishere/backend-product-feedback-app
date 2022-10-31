@@ -5,21 +5,20 @@ class Api::V1::CommentsController < ApplicationController
     # get parent comments for the specific feedback
     @comments = Comment.where(feedback: params[:feedback_id])
                        .where(parent_id: nil)
-                       .order(:created_at)
+                       .order(created_at: :desc)
                        .page(params[:offset])
                        .per(params[:limit])
-                       .includes(:comments, :user)
+                       .includes(:replies, :user)
     render json: @comments
   end
 
   def replies
     @comments = Comment.find(params[:parent_id])
-                       .comments.page(params[:offset])
+                       .replies.page(params[:offset])
                        .per(params[:limit])
     render json: @comments
   end
 
-  def
   # cases
   # 1. brand new comment
   # 2. replying to an exist comment
@@ -29,7 +28,7 @@ class Api::V1::CommentsController < ApplicationController
     # A reply
     if(comment_params[:parent_id])
       parent_comment = Comment.find(comment_params[:parent_id])
-      new_comment = parent_comment.comments.build(comment_params)
+      new_comment = parent_comment.replies.build(comment_params)
     else
       new_comment = current_user.comments.build(comment_params)
     end
@@ -44,6 +43,6 @@ class Api::V1::CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:parent_id, :feedback_id, :content, :reply_to)
+    params.require(:comment).permit(:parent_id, :feedback_id, :content, :replied_to).merge(user_id: current_user.id)
   end
 end
