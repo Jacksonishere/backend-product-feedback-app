@@ -8,9 +8,16 @@ class Feedback < ApplicationRecord
   }
   
   scope :sort_by_likes, -> (order) { 
-    left_joins(:likes). # left join to generate rows with feedback and like cols
-    group(:id).      # group the rows by feedback id, so we can run aggregate functions
-    order("count(likes.id) #{order}, feedbacks.created_at desc")
+    order(likeable_count: order.to_sym).
+    order(created_at: :desc)
+    # left_joins(:likes). # left join to generate rows with feedback and like cols
+    # group(:id).      # group the rows by feedback id, so we can run aggregate functions
+    # order("count(likes.id) #{order}, feedbacks.created_at desc")
+   } 
+
+  scope :sort_by_comments, -> (order) { 
+    order(comments_count: order.to_sym).
+    order(created_at: :desc)
    } 
 
   belongs_to :user

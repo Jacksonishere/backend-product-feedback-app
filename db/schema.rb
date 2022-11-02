@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2022_10_27_023221) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "replied_to"
-    t.integer "replies_count"
+    t.integer "replies_count", default: 0
     t.index ["feedback_id"], name: "index_comments_on_feedback_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 2022_10_27_023221) do
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "likeable_count"
-    t.integer "comments_count"
+    t.integer "likeable_count", default: 0
+    t.integer "comments_count", default: 0
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 

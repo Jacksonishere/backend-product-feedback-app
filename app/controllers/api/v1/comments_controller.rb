@@ -29,7 +29,6 @@ class Api::V1::CommentsController < ApplicationController
     if(comment_params[:parent_id])
       parent_comment = Comment.find(comment_params[:parent_id])
       new_comment = parent_comment.replies.build(comment_params)
-      binding.irb
     else
       new_comment = current_user.comments.build(comment_params)
     end
