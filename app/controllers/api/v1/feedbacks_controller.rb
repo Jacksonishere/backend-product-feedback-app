@@ -30,7 +30,12 @@ class Api::V1::FeedbacksController < ApplicationController
   end
 
   def destroy
-  
+    @feedback = Feedback.find(params[:id])
+    if @feedback.destroy
+      head :no_content
+    else
+      head :unprocessable_entity
+    end
   end
 
   def create
