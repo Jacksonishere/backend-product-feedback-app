@@ -1,5 +1,6 @@
 class Feedback < ApplicationRecord
   include Filterable
+  enum status: { suggestion: 0, planned: 1, in_progress: 2, live: 3 }
   
   validates_length_of :detail, minimum: 1, maximum: 256
   
