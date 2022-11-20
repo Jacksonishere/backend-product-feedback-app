@@ -1,5 +1,6 @@
 databases:
   - name: product-feedback-app-api-db
+    plan: free
 
 services:
   - type: web

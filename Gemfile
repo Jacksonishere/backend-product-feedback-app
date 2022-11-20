@@ -46,4 +46,6 @@ gem 'faker'
 gem 'kaminari'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'pry', '~> 0.13.1'
+# gem 'rails_same_site_cookie', '~> 0.1.8'
+
 
