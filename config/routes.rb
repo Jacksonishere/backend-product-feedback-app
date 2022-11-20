@@ -9,9 +9,13 @@ Rails.application.routes.draw do
       
       get '/parent_comments', to: "comments#parent_comments"
       get '/replies', to: "comments#replies"
-      post '/login', to: 'sessions#create'
+
       get '/is_logged_in', to: 'sessions#is_logged_in'
+      post '/login', to: 'sessions#create'
       delete '/signout', to: 'sessions#destroy'
+
+      get '/status_count', to: 'feedbacks#status_count'
+      get '/feedbacks_by_statuses', to: 'feedbacks#feedbacks_by_statuses'
       
       post '/signup', to: 'users#create'
     end

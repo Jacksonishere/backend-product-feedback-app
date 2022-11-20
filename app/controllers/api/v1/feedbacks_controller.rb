@@ -60,7 +60,23 @@ class Api::V1::FeedbacksController < ApplicationController
       head :unprocessable_entity
     end
   end
+
+  def status_count 
+    feedbacks = Feedback.group(:status).count
+    @feedbacks = Feedback.statuses.map { |k, v| [k , feedbacks[k] || 0] }.to_h
+    render json: @feedbacks
+  end
   
+  def feedbacks_by_statuses
+    feedbacks_by_status = Feedback.statuses.except("suggestion").map { |k, _| 
+      feedbacks = ActiveModel::SerializableResource.new(Feedback.where(status: k.to_sym).limit(5).includes(:user, :likes, likes: :user), each_serializer: FeedbackSerializer, scope: current_user).as_json
+      count = Feedback.where(status: k.to_sym).count
+      [k , { feedbacks: feedbacks, count: count}] 
+    }.to_h
+
+    render json: feedbacks_by_status
+  end
+
   private
     def feedback_params
       params.require(:feedback).permit(:title, :category, :status, :detail)
