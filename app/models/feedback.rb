@@ -16,10 +16,14 @@ class Feedback < ApplicationRecord
     # order("count(likes.id) #{order}, feedbacks.created_at desc")
    } 
 
-  scope :sort_by_comments, -> (order) { 
+  scope :sort_by_comments, -> (order) {
     order(comments_count: order.to_sym).
     order(created_at: :desc)
-   } 
+   }
+
+  scope :sort_by_feedbacks, -> (_order) {
+    order(created_at: :desc)
+  }
 
   belongs_to :user
   has_many :likes, as: :likeable, dependent: :delete_all

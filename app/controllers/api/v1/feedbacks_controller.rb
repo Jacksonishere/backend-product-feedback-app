@@ -61,7 +61,7 @@ class Api::V1::FeedbacksController < ApplicationController
     end
   end
 
-  def status_count 
+  def status_count
     feedbacks = Feedback.group(:status).count
     @feedbacks = Feedback.statuses.map { |k, v| [k , feedbacks[k] || 0] }.to_h
     render json: @feedbacks

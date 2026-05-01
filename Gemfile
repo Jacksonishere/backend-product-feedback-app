@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.3'
+ruby '3.3.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.6', '>= 6.1.6.1'
@@ -31,6 +31,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'airborne'
   gem 'factory_bot_rails'
+  gem 'pry', '~> 0.14'
 end
 
 group :development do
@@ -45,7 +46,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'faker'
 gem 'kaminari'
 gem 'active_model_serializers', '~> 0.10.0'
-gem 'pry', '~> 0.13.1'
 # gem 'rails_same_site_cookie', '~> 0.1.8'
 
 

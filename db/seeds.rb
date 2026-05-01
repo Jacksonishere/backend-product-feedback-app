@@ -5,7 +5,7 @@ statuses = %w(suggestion planned in-progress live)
 
 50.times do
   User.create(Faker::Internet.user('username', 'email', 'password').merge({
-    :avatar_url => "https://avatars.dicebear.com/api/avataaars/#{Faker::Internet.uuid}.svg", 
+    :avatar_url => "https://api.dicebear.com/9.x/adventurer/svg?seed=#{Faker::Internet.uuid}",
     :full_name => "#{Faker::Name.first_name} #{Faker::Name.last_name}"
     }))
 end
